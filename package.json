@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/yamodah/Notepad_api/issues"
   },
-  "homepage": "https://github.com/yamodah/Notepad_api#readme"
+  "homepage": "https://github.com/yamodah/Notepad_api#readme",
+  "dependencies": {
+    "knex": "^0.95.14",
+    "pg": "^8.7.1"
+  }
 }
