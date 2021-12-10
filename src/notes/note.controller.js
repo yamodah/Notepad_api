@@ -18,7 +18,7 @@ async function noteExists(req, res, next) {
     });
   }
 //TITLE & CONTENT VALIDATION
-const hasTitleAndContent = hasProperties([title,content])
+const hasTitleAndContent = hasProperties("title","content")
 
 //CRUD FUNCTIONS 
 async function list (req,res,next){
@@ -29,12 +29,12 @@ function read(req, res, next){
     res.json({data:res.locals.note})
 }
 async function create(req, res, next){
-    const data = await service.create(req.body.data)
-    res.statusCode(201).json({data})
+    const data = await service.create(req.body)
+    res.status(201).json({data})
 }
 async function update(req, res, next){
     const updatedNote = {
-        ...req.body.data,
+        ...req.body,
         id:res.locals.note.id
     }
     const data = await service.update(updatedNote)
@@ -48,7 +48,7 @@ async function destroy(req, res, next){
 module.exports = {
     list,
     read:[asyncErrorBoundary(noteExists), read],
-    create:[hasTitleAndContent,create],
+    create:[asyncErrorBoundary(hasTitleAndContent), asyncErrorBoundary(create)],
     update:[asyncErrorBoundary(noteExists),asyncErrorBoundary(update)],
     delete:[asyncErrorBoundary(noteExists),asyncErrorBoundary(destroy)]
 }

@@ -4,10 +4,11 @@ const cors = require("cors")
 const notFound = require("./errors/notFound")
 const errorHandler = require("./errors/errorHandler")
 const notesRouter = require("./notes/note.router")
-app.use(cors())
 app.use(express.json())
+app.use(cors())
 
-app.use("notes",notesRouter)
+
+app.use("/notes",notesRouter)
 
 app.use(notFound)
 app.use(errorHandler)
