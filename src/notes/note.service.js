@@ -15,10 +15,14 @@ const update=(updatedNote)=>{
         .select("*")
         .where({id:updatedNote.id})
         .update(updatedNote)
+        .returning("*")
+        .then((note)=>note[0])
 }
 const create=(newNote)=>{
     return knex("notes")
         .insert(newNote)
+        .returning("*")
+        .then((note)=>note[0])
 }
 const destroy=(id)=>{
     return knex("notes")
