@@ -24,5 +24,22 @@ function read(req, res, next){
     res.json({data:res.locals.note})
 }
 async function create(req, res, next){
+    const data = await service.create(req.body.data)
+    res.statusCode(201).json({data})
+}
+async function update(req, res, next){
+    const updatedNote = {
+        ...req.body.data,
+        id:res.locals.note.id
+    }
+    const data = await service.update(updatedNote)
+    res.json({data})
+}
+async function destroy(req, res, next){
+    await service.destroy(res.locals.note.id)
+    res.sendStatus(204)
+}
+
+module.exports = {
     
 }
