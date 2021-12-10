@@ -1,10 +1,7 @@
 const service = require("./note.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
+const hasProperties = require("../errors/hasProperties")
 
-async function list (req,res,next){
-    const data = await service.list()
-    res.json({data})
-}
 //ID VALIDATION
 async function noteExists(req, res, next) {
     const { noteId } = req.params;
@@ -17,9 +14,17 @@ async function noteExists(req, res, next) {
     }
     next({
       status: 404,
-      message: "Movie cannot be found",
+      message: "Note cannot be found",
     });
   }
+//TITLE & CONTENT VALIDATION
+const hasTitleAndContent = hasProperties([title,content])
+
+//CRUD FUNCTIONS 
+async function list (req,res,next){
+    const data = await service.list()
+    res.json({data})
+}
 function read(req, res, next){
     res.json({data:res.locals.note})
 }
@@ -41,5 +46,9 @@ async function destroy(req, res, next){
 }
 
 module.exports = {
-    
+    list,
+    read:[asyncErrorBoundary(noteExists), read],
+    create:[hasTitleAndContent,create],
+    update:[asyncErrorBoundary(noteExists),asyncErrorBoundary(update)],
+    delete:[asyncErrorBoundary(noteExists),asyncErrorBoundary(destroy)]
 }
