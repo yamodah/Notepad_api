@@ -9,7 +9,9 @@ app.use(cors())
 
 
 app.use("/notes",notesRouter)
-
+app.get("/",(req,res,next)=>{
+    res.send("We are over at /notes !")
+})
 app.use(notFound)
 app.use(errorHandler)
 
