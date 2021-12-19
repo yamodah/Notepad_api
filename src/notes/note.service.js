@@ -3,6 +3,7 @@ const knex = require("../db/connection")
 const list=()=>{
     return knex("notes")
         .select("*")
+        .orderBy("id")
 }
 const read=(id)=>{
     return knex("notes")
